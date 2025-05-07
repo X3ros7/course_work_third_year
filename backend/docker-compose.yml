@@ -1,0 +1,76 @@
+services:
+  # app:
+  #   restart: unless-stopped
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '${PORT}:${PORT}'
+
+  db:
+    image: postgres:alpine
+    restart: unless-stopped
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - '${DB_PORT}:5432'
+
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_USER: ${REDIS_USER}
+    ports:
+      - '${REDIS_PORT}:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', '-a', '$REDIS_PASSWORD', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    restart: unless-stopped
+    ports:
+      - '5540:5540'
+    volumes:
+      - redis-insight:/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+      - PGADMIN_LISTEN_PORT=5051
+      - PGADMIN_LISTEN_ADDRESS=0.0.0.0
+    ports:
+      - '5051:5051'
+    depends_on:
+      - db
+
+  minio:
+    command: 'server /data --console-address ":9001"'
+    image: quay.io/minio/minio
+    restart: unless-stopped
+    environment:
+      - MINIO_ROOT_PASSWORD=CHANGEME123
+      - MINIO_ROOT_USER=ROOTNAME
+    volumes:
+      - minio-data:/data
+    container_name: minio
+    ports:
+      - '9001:9001'
+      - '9000:9000'
+
+volumes:
+  pg-data:
+  redis-data:
+  redis-insight:
+  minio-data:

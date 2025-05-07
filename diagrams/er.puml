@@ -1,0 +1,89 @@
+@startuml er.puml
+
+entity "User" as User {
+  +id : int
+  firstName : string
+  lastName : string
+  email : string
+  password : string
+  avatar : string
+  role : Roles
+  isVerified : boolean
+  isBlocked : boolean
+}
+
+entity "Seller" as Seller {
+  +id : int
+  name : string
+  email : string
+  password : string
+  description : string
+  avatar : string
+  isVerified : boolean
+  isBlocked : boolean
+}
+
+entity "Product" as Product {
+  +id : int
+  name : string
+  description : string
+  price : number
+  genre : string
+  artist : string
+  year : number
+  trackList : jsonb
+  isActive : boolean
+  sellerId : int
+}
+
+entity "Order" as Order {
+  +id : int
+  userId : int
+  productId : int
+  stripePaymentIntentId : string
+  stripePaymentStatus : string
+  deliveryStatus : DeliveryStatus
+}
+
+entity "Review" as Review {
+  +id : int
+  rating : number
+  comment : string
+  userId : int
+  productId : int
+}
+
+entity "UserFavorite" as UserFavorite {
+  +id : int
+  userId : int
+  productId : int
+}
+
+entity "ProductImage" as ProductImage {
+  +id : int
+  url : string
+  productId : int
+}
+
+' Відношення
+User ||--o{ Order : "orders"
+User ||--o{ UserFavorite : "favoriteProducts"
+
+Seller ||--o{ Product : "products"
+
+Product ||--o{ ProductImage : "images"
+Product ||--o{ Review : "reviews"
+Product ||--o{ UserFavorite : "favoriteTo"
+
+Order ||--|| Product : "product"
+Order }o--|| User : "user"
+
+Review }o--|| User : "user"
+Review }o--|| Product : "product"
+
+UserFavorite }o--|| User : "user"
+UserFavorite }o--|| Product : "product"
+
+ProductImage }o--|| Product : "product"
+
+@enduml

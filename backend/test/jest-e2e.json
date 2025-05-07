@@ -1,0 +1,45 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@app/auth": "<rootDir>/../libs/auth/src",
+    "@app/auth/(.*)": "<rootDir>/../libs/auth/src/$1",
+    "@app/config": "<rootDir>/../libs/config/src",
+    "@app/config/(.*)": "<rootDir>/../libs/config/src/$1",
+    "@app/decorators": "<rootDir>/../libs/decorators/src",
+    "@app/decorators/(.*)": "<rootDir>/../libs/decorators/src/$1",
+    "@app/dto": "<rootDir>/../libs/dto/src",
+    "@app/dto/(.*)": "<rootDir>/../libs/dto/src/$1",
+    "@app/entities": "<rootDir>/../libs/entities/src",
+    "@app/entities/(.*)": "<rootDir>/../libs/entities/src/$1",
+    "@app/enums": "<rootDir>/../libs/enums/src",
+    "@app/enums/(.*)": "<rootDir>/../libs/enums/src/$1",
+    "@app/filters": "<rootDir>/../libs/filter/src",
+    "@app/filters/(.*)": "<rootDir>/../libs/filter/src/$1",
+    "@app/guards": "<rootDir>/../libs/guards/src",
+    "@app/guards/(.*)": "<rootDir>/../libs/guards/src/$1",
+    "@app/interceptors": "<rootDir>/../libs/interceptors/src",
+    "@app/interceptors/(.*)": "<rootDir>/../libs/interceptors/src/$1",
+    "@app/interfaces": "<rootDir>/../libs/interfaces/src",
+    "@app/interfaces/(.*)": "<rootDir>/../libs/interfaces/src/$1",
+    "@app/mailgun": "<rootDir>/../libs/mailgun/src",
+    "@app/mailgun/(.*)": "<rootDir>/../libs/mailgun/src/$1",
+    "@app/redis": "<rootDir>/../libs/redis/src",
+    "@app/redis/(.*)": "<rootDir>/../libs/redis/src/$1",
+    "@app/storage": "<rootDir>/../libs/storage/src",
+    "@app/storage/(.*)": "<rootDir>/../libs/storage/src/$1",
+    "@app/stripe": "<rootDir>/../libs/stripe/src",
+    "@app/stripe/(.*)": "<rootDir>/../libs/stripe/src/$1",
+    "@app/twilio": "<rootDir>/../libs/twilio/src",
+    "@app/twilio/(.*)": "<rootDir>/../libs/twilio/src/$1"
+  }
+}
