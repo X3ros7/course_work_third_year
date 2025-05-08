@@ -138,7 +138,7 @@ export default function SignUpPage() {
       });
 
       localStorage.setItem('token', response.data.token);
-      router.push('/user/me');
+      router.push('/products');
     } catch (error) {
       toast.error('Login failed', {
         description:

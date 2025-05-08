@@ -4,6 +4,8 @@ import {
   SidebarInset,
 } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 
 export default function ProductsLayout({
   children,
@@ -12,6 +14,7 @@ export default function ProductsLayout({
 }) {
   return (
     <div>
+      <Header />
       <SidebarProvider
         style={{
           '--sidebar-width': '10rem',

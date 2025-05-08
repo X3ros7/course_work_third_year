@@ -55,6 +55,11 @@ export class ProductsService {
         'year',
         'price',
         'seller.name',
+        'isActive',
+      ],
+      defaultSortBy: [
+        ['isActive', 'DESC'],
+        ['createdAt', 'DESC'],
       ],
       select: [
         'id',

@@ -11,6 +11,7 @@ export type Product = {
   year: number;
   genre: string;
   createdAt: string;
+  isActive: boolean;
   seller: Seller;
   images: Image[];
   trackList: Track[];

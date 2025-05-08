@@ -7,6 +7,11 @@ export default function useUser() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setIsLoading(false);
+      return;
+    }
     const fetchUser = async () => {
       const response = await me();
       setUser(response.data as User);

@@ -1,0 +1,5 @@
+Add product activation status and enhance layout
+- Added isActive property to Product type and ProductsService
+- Enhanced layout with Header/Footer components
+- Improved navigation and auth flow
+- Updated ProductCard to show 'Out of Stock' for inactive items 

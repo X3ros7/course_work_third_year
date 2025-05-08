@@ -7,8 +7,19 @@ import { ProductCard } from './components/ProductCard';
 import { ProductFilters } from './components/ProductFilters';
 import { useProducts } from './hooks/useProducts';
 import { useProductFilters } from './hooks/useProductFilters';
-
+import { useRouter } from 'next/navigation';
 export default function Products() {
+  const router = useRouter();
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/sign-up');
+    } else {
+      setIsAuthenticating(false);
+    }
+  }, [router]);
+
   const { products, loading, error, totalItems, fetchProducts, pages } =
     useProducts();
   const [page, setPage] = useState(1);

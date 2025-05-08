@@ -10,12 +10,23 @@ import { Button } from '@/components/ui/button';
 import { ShoppingCart, Heart } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-
+import { buyProduct } from '@/services/productsService';
+import { redirect } from 'next/navigation';
 interface ProductCardProps {
   product: Product;
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
+  const buyNow = async (productId: number) => {
+    const response = await buyProduct(productId);
+    console.log(response);
+    if (response.code === 201) {
+      redirect(response.data.url);
+    } else {
+      setError(response.message || 'Failed to buy product');
+    }
+  };
+
   return (
     <Card key={product.id} className="group overflow-hidden">
       <div className="relative">
@@ -30,12 +41,21 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           width={800}
           height={800}
         />
+        {!product.isActive && (
+          <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center">
+            <span className="text-white text-xl font-bold bg-gray-800 px-4 py-2 rounded">
+              Out of Stock
+            </span>
+          </div>
+        )}
         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-200 flex items-center justify-center">
           <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-2">
             <Button
               size="sm"
               variant="secondary"
               className="rounded-full w-10 h-10 p-0"
+              disabled={!product.isActive}
+              onClick={() => buyNow(product.id)}
             >
               <ShoppingCart className="h-5 w-5" />
             </Button>

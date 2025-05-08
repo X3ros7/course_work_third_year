@@ -44,7 +44,7 @@ const Sidebar = ({
     toast('Logged out', {
       description: 'You have been successfully logged out',
     });
-    router.push('/seller/login');
+    router.push('/');
   };
 
   const navItems = [
