@@ -65,7 +65,7 @@ export function AppSidebar() {
   const displayName = isLoading ? 'Loading...' : userName || 'User';
 
   return (
-    <Sidebar variant="inset">
+    <Sidebar className="bg-white border-none shadow-none">
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>
@@ -86,16 +86,28 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <Image
-                    src={avatar || '/default-avatar.png'}
-                    alt="Avatar"
-                    width={20}
-                    height={20}
-                    className="rounded-full object-cover"
-                  />{' '}
-                  {displayName}
-                  <ChevronUp className="ml-auto" />
+                <SidebarMenuButton
+                  className="
+                    flex items-center gap-2 w-full px-3 py-2 rounded-md
+                    transition-colors duration-150
+                    hover:bg-blue-50
+                    focus:outline-none
+                    focus:ring-2 focus:ring-blue-200
+                  "
+                >
+                  {avatar && (
+                    <Image
+                      src={avatar}
+                      alt="Avatar"
+                      width={24}
+                      height={24}
+                      className="rounded-full object-cover"
+                    />
+                  )}
+                  <span className="font-medium text-sm truncate">
+                    {displayName}
+                  </span>
+                  <ChevronUp className="ml-auto text-gray-400" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
