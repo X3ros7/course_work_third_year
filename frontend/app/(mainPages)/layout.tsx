@@ -14,7 +14,6 @@ export default function ProductsLayout({
 }) {
   return (
     <div>
-      <Header />
       <SidebarProvider
         style={{
           '--sidebar-width': '10rem',
@@ -24,6 +23,7 @@ export default function ProductsLayout({
         <AppSidebar />
         <SidebarInset>
           <SidebarTrigger className="absolute top-0 left-0 text-blue-500" />
+          <Header />
           {children}
         </SidebarInset>
       </SidebarProvider>

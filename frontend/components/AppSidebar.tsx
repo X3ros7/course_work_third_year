@@ -65,7 +65,7 @@ export function AppSidebar() {
   const displayName = isLoading ? 'Loading...' : userName || 'User';
 
   return (
-    <Sidebar className="bg-white border-none shadow-none">
+    <Sidebar variant="sidebar" className="bg-white border-none shadow-none">
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>
