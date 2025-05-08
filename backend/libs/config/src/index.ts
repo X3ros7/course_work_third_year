@@ -7,6 +7,9 @@ export * from './auth/auth.service';
 export * from './db/db.module';
 export * from './db/db.service';
 
+export * from './google/google.module';
+export * from './google/google.service';
+
 export * from './redis/redis.module';
 export * from './redis/redis.service';
 

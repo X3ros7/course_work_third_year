@@ -37,6 +37,7 @@ import {
 
 import { UserService } from 'src/user/user.service';
 import { RedisRepository } from '@app/redis';
+import { GoogleUser } from './strategies/google.strategy';
 
 @Injectable()
 export class AuthService {
@@ -333,5 +334,30 @@ export class AuthService {
       token,
       refreshToken,
     };
+  }
+
+  async handleGoogleAuth(googleUser: GoogleUser) {
+    if (!googleUser.email) {
+      throw new UnauthorizedException('Email not provided by Google');
+    }
+
+    let user = await this.userService.findByEmail(googleUser.email);
+    const hashedPassword = await hash(googleUser.providerId, 10);
+
+    if (!user) {
+      // Create new user if doesn't exist
+      const newUser = this.userRepository.create({
+        email: googleUser.email,
+        firstName: googleUser.firstName || '',
+        lastName: googleUser.lastName || '',
+        isVerified: true,
+        role: Roles.User,
+        password: hashedPassword,
+      });
+      user = await this.userRepository.save(newUser);
+    }
+
+    const tokens = await this.generateTokens(user);
+    return this.getAuthResult(user, tokens);
   }
 }

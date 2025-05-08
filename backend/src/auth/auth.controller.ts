@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 
 import { Response } from 'express';
 
@@ -16,6 +24,8 @@ import { AppConfigService } from '@app/config';
 import { Cookie } from '@app/decorators';
 
 import { AuthService } from './auth.service';
+import { GoogleOauthGuard } from '@app/guards';
+import { GoogleUser } from './strategies/google.strategy';
 
 @Controller('auth')
 export class AuthController {
@@ -45,6 +55,31 @@ export class AuthController {
   @Post('register')
   async register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
+  }
+
+  @Get('google')
+  @UseGuards(GoogleOauthGuard)
+  async googleAuth() {}
+
+  @Get('google/callback')
+  @UseGuards(GoogleOauthGuard)
+  async googleAuthRedirect(
+    @Req() req: { user: GoogleUser },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const user = req.user;
+    const result = await this.authService.handleGoogleAuth(user);
+
+    res.cookie('refreshToken', result.refreshToken, {
+      httpOnly: true,
+      sameSite: this.appConfigService.env === 'prod' ? 'none' : 'strict',
+      secure: this.appConfigService.env === 'prod',
+      maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { refreshToken, ...tokens } = result;
+    return tokens;
   }
 
   @Post('verify-email')

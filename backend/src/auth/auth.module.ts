@@ -3,7 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 
 import { JwtAuthModule } from '@app/auth';
-import { AuthConfigModule, AppConfigModule } from '@app/config';
+import {
+  AuthConfigModule,
+  AppConfigModule,
+  GoogleConfigModule,
+} from '@app/config';
 import { User, HashRegister } from '@app/entities';
 
 import { AuthService } from './auth.service';
@@ -13,11 +17,14 @@ import { JwtSellerAuthStrategy } from './strategies/jwt-seller.strategy';
 import { UserModule } from 'src/user/user.module';
 import { SellerModule } from 'src/seller/seller.module';
 import { RedisModule } from '@app/redis';
+import { GoogleStrategy } from './strategies/google.strategy';
+
 @Module({
   imports: [
     AppConfigModule,
     AuthConfigModule,
     JwtAuthModule,
+    GoogleConfigModule,
     UserModule,
     SellerModule,
     BullModule.registerQueue({ name: 'mail' }),
@@ -25,6 +32,11 @@ import { RedisModule } from '@app/redis';
     RedisModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtAuthStrategy, JwtSellerAuthStrategy],
+  providers: [
+    AuthService,
+    JwtAuthStrategy,
+    JwtSellerAuthStrategy,
+    GoogleStrategy,
+  ],
 })
 export class AuthModule {}
