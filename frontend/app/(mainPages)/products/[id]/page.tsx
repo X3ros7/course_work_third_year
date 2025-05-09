@@ -254,7 +254,7 @@ export default function ProductPage() {
             </div>
             <h1 className="text-3xl font-bold">{product.name}</h1>
             <p className="text-xl font-bold text-blue-600 mt-2">
-              ${product.price.toFixed(2)}
+              ${Number(product.price).toFixed(2)}
             </p>
           </div>
 

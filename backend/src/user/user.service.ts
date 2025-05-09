@@ -41,11 +41,14 @@ export class UserService {
   }
 
   async orders(user: User): Promise<Order[]> {
-    return this.orderRepository
-      .createQueryBuilder('o')
-      .leftJoinAndSelect('o.product', 'p')
-      .where('o.userId = :id', { id: user.id })
-      .getMany();
+    return this.orderRepository.find({
+      where: {
+        user: {
+          id: user.id,
+        },
+      },
+      relations: ['product', 'product.images'],
+    });
   }
 
   async findByEmail(email: string): Promise<User | null> {

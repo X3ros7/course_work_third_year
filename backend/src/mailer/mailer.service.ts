@@ -177,12 +177,12 @@ export class MailerService {
                   
                   <div class="item-row">
                       <div>${product.name}</div>
-                      <div>$${product.price.toFixed(2)}</div>
+                      <div>$${Number(product.price).toFixed(2)}</div>
                   </div>
                   
                   <div class="total-row">
                       <div>Total</div>
-                      <div>$${product.price.toFixed(2)}</div>
+                      <div>$${Number(product.price).toFixed(2)}</div>
                   </div>
               </div>
               

@@ -49,13 +49,13 @@ export class ReceiptService {
       const itemTop = tableTop + 25;
       this.doc
         .text(product.name, 50, itemTop)
-        .text(`$${product.price.toFixed(2)}`, 400, itemTop);
+        .text(`$${Number(product.price).toFixed(2)}`, 400, itemTop);
 
       // Add total
       this.doc
         .moveDown(2)
         .fontSize(12)
-        .text(`Total: $${product.price.toFixed(2)}`, 400);
+        .text(`Total: $${Number(product.price).toFixed(2)}`, 400);
 
       // Add footer
       this.doc

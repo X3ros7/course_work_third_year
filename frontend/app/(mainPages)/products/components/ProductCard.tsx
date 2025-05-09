@@ -73,7 +73,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <CardTitle className="text-lg">{product.name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="font-bold text-blue-600">${product.price.toFixed(2)}</p>
+        <p className="font-bold text-blue-600">
+          ${Number(product.price).toFixed(2)}
+        </p>
         <div className="flex flex-row justify-between">
           <p className="text-sm text-gray-600 font-bold mt-1">
             {product.seller.name}

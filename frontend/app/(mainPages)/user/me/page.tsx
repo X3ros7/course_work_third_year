@@ -42,6 +42,7 @@ export default function Me() {
       const res = await getFavorites();
       setWishlistItems(res.data as Product[]);
     };
+    console.log(orders);
     getWishlistItems();
   }, [orders]);
 
@@ -167,49 +168,66 @@ export default function Me() {
                     {recentOrders.slice(0, 3).map((order) => (
                       <div
                         key={order.id}
-                        className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
+                        className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b pb-4 last:border-0 last:pb-0"
                       >
-                        <div>
-                          <div className="font-medium">{order.id}</div>
-                          <div className="text-sm text-gray-500">
-                            {new Date(order.createdAt).toLocaleDateString(
-                              'en-US',
-                              {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                              },
+                        <div className="flex items-center mb-3 sm:mb-0">
+                          <div className="h-16 w-16 bg-gray-100 rounded-md flex items-center justify-center mr-3">
+                            {order.product.images &&
+                            order.product.images.length > 0 ? (
+                              <Image
+                                src={order.product.images[0].url}
+                                alt={order.product.name}
+                                width={64}
+                                height={64}
+                                loading="lazy"
+                                className="rounded-md object-cover"
+                              />
+                            ) : (
+                              <Disc3 className="h-8 w-8 text-gray-400" />
                             )}
                           </div>
-                          <div className="flex items-center mt-1">
-                            <Badge
-                              variant="outline"
-                              className={`text-xs ${
-                                order.deliveryStatus === 'delivered'
-                                  ? 'bg-green-50 text-green-700 border-green-200'
-                                  : order.deliveryStatus === 'pending'
-                                  ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
-                                  : 'bg-red-50 text-red-700 border-red-200'
-                              }`}
-                            >
-                              {order.deliveryStatus}
-                            </Badge>
+                          <div>
+                            <div className="font-medium">Order {order.id}</div>
+                            <div className="text-sm text-gray-500">
+                              {new Date(order.createdAt).toLocaleDateString(
+                                'en-US',
+                                {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric',
+                                },
+                              )}
+                            </div>
+                            <div className="flex items-center mt-1">
+                              <Badge
+                                variant="outline"
+                                className={`text-xs ${
+                                  order.deliveryStatus === 'delivered'
+                                    ? 'bg-green-50 text-green-700 border-green-200'
+                                    : order.deliveryStatus === 'pending'
+                                    ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
+                                    : 'bg-red-50 text-red-700 border-red-200'
+                                }`}
+                              >
+                                {order.deliveryStatus}
+                              </Badge>
+                            </div>
                           </div>
                         </div>
                         <div className="text-right">
                           <div className="font-medium">
-                            ${order.product.price.toFixed(2)}
+                            ${Number(order.product.price).toFixed(2)}
                           </div>
                           <div className="text-sm text-gray-500">
                             {order.product.name}
                           </div>
                           <div className="text-sm text-gray-500">
-                            Payment Status: {` `}
+                            Payment:{' '}
                             <span
-                              className={`font-bold ${
+                              className={`font-medium ${
                                 order.stripePaymentStatus === 'succeeded'
-                                  ? 'text-green-500'
-                                  : 'text-red-500'
+                                  ? 'text-green-600'
+                                  : 'text-red-600'
                               }`}
                             >
                               {order.stripePaymentStatus}
@@ -308,7 +326,13 @@ export default function Me() {
                             <h3 className="font-medium">Order {order.id}</h3>
                             <Badge
                               variant="outline"
-                              className="ml-3 text-xs bg-green-50 text-green-700 border-green-200"
+                              className={`ml-3 text-xs ${
+                                order.deliveryStatus === 'delivered'
+                                  ? 'bg-green-50 text-green-700 border-green-200'
+                                  : order.deliveryStatus === 'pending'
+                                  ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
+                                  : 'bg-red-50 text-red-700 border-red-200'
+                              }`}
                             >
                               {order.deliveryStatus}
                             </Badge>
@@ -325,36 +349,50 @@ export default function Me() {
                             )}
                           </p>
                         </div>
-                        <div className="mt-3 sm:mt-0 flex items-center">
-                          <div className="text-right mr-4">
+                        <div className="mt-3 sm:mt-0">
+                          <div className="text-right">
                             <div className="font-medium">
-                              ${order.product.price.toFixed(2)}
+                              ${Number(order.product.price).toFixed(2)}
                             </div>
                             <div className="text-sm text-gray-500">
-                              {order.product.name}
+                              Payment Status:{' '}
+                              <span
+                                className={`font-medium ${
+                                  order.stripePaymentStatus === 'succeeded'
+                                    ? 'text-green-600'
+                                    : 'text-red-600'
+                                }`}
+                              >
+                                {order.stripePaymentStatus}
+                              </span>
                             </div>
                           </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-                          >
-                            View Details
-                          </Button>
                         </div>
                       </div>
                       <div className="p-4">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center">
-                            <div className="h-16 w-16 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                              <Disc3 className="h-8 w-8 text-gray-400" />
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                          <div className="flex items-center mb-4 sm:mb-0">
+                            <div className="h-20 w-20 bg-gray-100 rounded-md flex items-center justify-center mr-4">
+                              {order.product.images &&
+                              order.product.images.length > 0 ? (
+                                <Image
+                                  src={order.product.images[0].url}
+                                  alt={order.product.name}
+                                  width={80}
+                                  height={80}
+                                  loading="lazy"
+                                  className="rounded-md object-cover"
+                                />
+                              ) : (
+                                <Disc3 className="h-10 w-10 text-gray-400" />
+                              )}
                             </div>
                             <div>
-                              <div className="font-medium">
+                              <div className="font-medium text-lg">
                                 {order.product.name}
                               </div>
-                              <div className="text-sm text-gray-500">
-                                {order.product.name}
+                              <div className="text-sm text-gray-500 mt-1">
+                                {order.product.seller?.name || 'Unknown Artist'}
                               </div>
                             </div>
                           </div>
@@ -403,34 +441,31 @@ export default function Me() {
                       <div className="h-20 w-20 bg-gray-100 rounded-md flex items-center justify-center mr-4">
                         <Image
                           src={
-                            item.product.images &&
-                            item.product.images.length > 0
-                              ? item.product.images[0]
+                            item.images && item.images.length > 0
+                              ? item.images[0].url
                               : '/placeholder.svg'
                           }
-                          alt={item.product.name}
+                          alt={item.name}
                           width={80}
                           height={80}
                           className="rounded-md"
                         />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-medium">{item.product.name}</h3>
+                        <h3 className="font-medium">{item.name}</h3>
                         <p className="text-blue-600 font-bold mt-1">
-                          {item.product.price.toFixed(2)}$
+                          {item.price.toFixed(2)}$
                         </p>
                         <div className="flex items-center mt-2">
                           <Badge
                             variant="outline"
                             className={`text-xs ${
-                              item.product.isActive
+                              item.isActive
                                 ? 'bg-green-50 text-green-700 border-green-200'
                                 : 'bg-red-50 text-red-700 border-red-200'
                             } mr-2`}
                           >
-                            {item.product.isActive
-                              ? 'In Stock'
-                              : 'Out of Stock'}
+                            {item.isActive ? 'In Stock' : 'Out of Stock'}
                           </Badge>
                         </div>
                       </div>

@@ -271,7 +271,7 @@ export default function SellerDashboard() {
                       </div>
                       <div className="text-right">
                         <div className="font-medium">
-                          ${order.product.price.toFixed(2)}
+                          ${Number(order.product.price).toFixed(2)}
                         </div>
                         <div
                           className={`text-xs px-2 py-1 rounded-full inline-block mt-1 ${

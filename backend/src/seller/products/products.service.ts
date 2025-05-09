@@ -161,7 +161,7 @@ export class SellerProductsService {
       .filter((url) => url)
       .map((url) =>
         this.productImageRepository.merge(new ProductImage(), {
-          url,
+          url: url.split('?')[0],
           productId,
         }),
       );
