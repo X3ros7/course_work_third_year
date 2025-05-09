@@ -23,7 +23,3 @@ Course work for ZNU (3 grade).
 ## Authors
 
 - [@x3ros7](https://www.github.com/x3ros7)
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
