@@ -370,21 +370,21 @@ export default function Me() {
                         </div>
                       </div>
                       <div className="p-4">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                          <div className="flex items-center mb-4 sm:mb-0">
-                            <div className="h-20 w-20 bg-gray-100 rounded-md flex items-center justify-center mr-4">
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center">
+                            <div className="h-16 w-16 bg-gray-100 rounded-md flex items-center justify-center mr-3">
                               {order.product.images &&
                               order.product.images.length > 0 ? (
                                 <Image
                                   src={order.product.images[0].url}
                                   alt={order.product.name}
-                                  width={80}
-                                  height={80}
+                                  width={64}
+                                  height={64}
                                   loading="lazy"
                                   className="rounded-md object-cover"
                                 />
                               ) : (
-                                <Disc3 className="h-10 w-10 text-gray-400" />
+                                <Disc3 className="h-8 w-8 text-gray-400" />
                               )}
                             </div>
                             <div>

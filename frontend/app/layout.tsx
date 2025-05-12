@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { headers } from 'next/headers';
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,6 +25,7 @@ export default async function RootLayout({
         <div className="min-h-screen flex flex-col">
           <main className="flex-grow">{children}</main>
         </div>
+        <Toaster />
       </body>
     </html>
   );
