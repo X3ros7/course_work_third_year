@@ -79,8 +79,7 @@ export class LoggerService {
           },
         }),
       },
-      // Используем мультистрим только в продакшене
-      !isDev ? multistream(streams) : undefined,
+      multistream(streams),
     );
   }
 

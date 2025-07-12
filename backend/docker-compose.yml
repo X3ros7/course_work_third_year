@@ -69,8 +69,33 @@ services:
       - '9001:9001'
       - '9000:9000'
 
+  loki:
+    image: grafana/loki:2.9.0
+    restart: unless-stopped
+    ports:
+      - '3100:3100'
+    environment:
+      - LOKI_AUTH_ENABLED=false
+
+  grafana:
+    image: grafana/grafana:10.0.0
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - loki
+
 volumes:
   pg-data:
   redis-data:
   redis-insight:
   minio-data:
+  loki-data:
+  grafana-data:
