@@ -10,6 +10,7 @@ import {
   DbConfigService,
   RedisConfigModule,
   RedisConfigService,
+  loggerConfig,
 } from '@app/config';
 import * as entities from '@app/entities';
 
@@ -24,6 +25,7 @@ import { ProductsModule } from 'src/products/products.module';
 import { WebhookModule } from 'src/webhook/webhook.module';
 import { AdminModule } from 'src/admin/admin.module';
 import { HealthModule } from 'src/health/health.module';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -59,6 +61,9 @@ import { HealthModule } from 'src/health/health.module';
     }),
     EventEmitterModule.forRoot(),
     ScheduleModule.forRoot(),
+
+    /* Logger */
+    LoggerModule.forRoot(loggerConfig),
 
     /* App modules */
     AdminModule,

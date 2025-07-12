@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import cookieParser from 'cookie-parser';
@@ -9,12 +9,17 @@ import { TypeOrmExceptionFilter } from '@app/filters';
 import { ResponseInterceptor } from '@app/interceptors';
 
 import { AppModule } from './app';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     rawBody: true,
     bodyParser: true,
+    bufferLogs: true,
   });
+
+  const logger = app.get(Logger);
+  app.useLogger(logger);
   const config = app.get(AppConfigService);
 
   const globalPrefix = 'api';
@@ -52,6 +57,6 @@ async function bootstrap() {
   SwaggerModule.setup(`${globalPrefix}/docs`, app, document);
 
   await app.listen(config.port, config.host);
-  Logger.log(`Server's running at http://${config.host}:${config.port}`);
+  logger.log(`Server's running at http://${config.host}:${config.port}`);
 }
 bootstrap();

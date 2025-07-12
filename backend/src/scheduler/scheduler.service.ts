@@ -1,12 +1,15 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class SchedulerService {
-  private readonly logger: Logger = new Logger(SchedulerService.name);
-
-  constructor(private readonly eventEmitter: EventEmitter2) {}
+  constructor(
+    private readonly eventEmitter: EventEmitter2,
+    @InjectPinoLogger(SchedulerService.name)
+    private readonly logger: PinoLogger,
+  ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_1AM)
   async deleteUnverifiedUsers(): Promise<void> {
