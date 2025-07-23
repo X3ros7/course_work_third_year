@@ -18,6 +18,6 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/.env ./
 
-RUN npm install --only=production
+RUN npm ci --omit=dev
 
 CMD [ "node", "./dist/src/main.js" ]

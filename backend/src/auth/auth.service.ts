@@ -37,6 +37,7 @@ import {
 
 import { UserService } from 'src/user/user.service';
 import { RedisRepository } from '@app/redis';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class AuthService {
@@ -51,6 +52,8 @@ export class AuthService {
     private readonly registerRepository: Repository<HashRegister>,
     @Inject(RedisRepository)
     private readonly redisRepository: RedisRepository,
+    @InjectPinoLogger(AuthService.name)
+    private readonly logger: PinoLogger,
   ) {}
 
   async login(dto: LoginDto): Promise<IAuthResult> {
@@ -58,6 +61,7 @@ export class AuthService {
 
     const user = await this.userService.findByEmail(email);
     if (!user) {
+      this.logger.error('User not found', { email, context: 'login' });
       throw new UnauthorizedException('User not found');
     }
 

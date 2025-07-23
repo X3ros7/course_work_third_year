@@ -9,6 +9,7 @@ import { DeepPartial, Repository } from 'typeorm';
 
 import { CreateProductDto, UpdateProductDto } from '@app/dto';
 import { Product, ProductImage, Seller } from '@app/entities';
+import { RedisConfigService } from '@app/config';
 
 @Injectable()
 export class SellerProductsService {
@@ -19,8 +20,16 @@ export class SellerProductsService {
     private readonly productRepository: Repository<Product>,
     @InjectRepository(ProductImage)
     private readonly productImageRepository: Repository<ProductImage>,
+    private readonly redisConfig: RedisConfigService,
   ) {
-    this.queueEvents = new QueueEvents('upload');
+    this.queueEvents = new QueueEvents('upload', {
+      connection: {
+        host: this.redisConfig.host,
+        port: this.redisConfig.port,
+        username: this.redisConfig.user,
+        password: this.redisConfig.password,
+      },
+    });
   }
 
   async create(
@@ -153,9 +162,9 @@ export class SellerProductsService {
       ),
     );
 
-    const urls = await Promise.all(
+    const urls = (await Promise.all(
       jobs.map((job) => job.waitUntilFinished(this.queueEvents)),
-    );
+    )) as string[];
 
     const productImages = urls
       .filter((url) => url)

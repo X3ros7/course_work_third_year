@@ -5,14 +5,16 @@ import {
   HttpHealthIndicator,
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
+import { AppConfigService } from '@app/config';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Controller('health')
 export class HealthController {
   constructor(
-    private readonly health: HealthCheckService,
     private readonly http: HttpHealthIndicator,
+    private readonly health: HealthCheckService,
     private readonly db: TypeOrmHealthIndicator,
+    private readonly appConfigService: AppConfigService,
     @InjectPinoLogger(HealthController.name)
     private readonly logger: PinoLogger,
   ) {}
@@ -30,7 +32,7 @@ export class HealthController {
       () =>
         this.http.pingCheck(
           'Web app',
-          'http://localhost:3000/api/v1/health/app',
+          `http://${this.appConfigService.host}:${this.appConfigService.port}/api/v1/health/app`,
         ),
       () => this.db.pingCheck('Database Connection'),
     ]);

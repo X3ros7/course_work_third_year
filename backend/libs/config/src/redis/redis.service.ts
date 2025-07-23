@@ -10,7 +10,7 @@ export class RedisConfigService {
   }
 
   public get port(): number {
-    return this.config.getOrThrow<number>('redis.port');
+    return parseInt(this.config.getOrThrow<string>('redis.port'), 10);
   }
 
   public get user(): string {
@@ -18,6 +18,6 @@ export class RedisConfigService {
   }
 
   public get password(): string {
-    return this.config.getOrThrow<string>('redis.port');
+    return this.config.getOrThrow<string>('redis.password');
   }
 }

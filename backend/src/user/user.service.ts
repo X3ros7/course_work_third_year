@@ -11,6 +11,7 @@ import { DeepPartial, LessThanOrEqual, Repository } from 'typeorm';
 import { ChangePasswordDto, UpdateUserDto } from '@app/dto';
 import { User, UserFavorite, Order } from '@app/entities';
 import { SendMailQueueParams } from '@app/interfaces';
+import { RedisConfigService } from '@app/config';
 
 @Injectable()
 export class UserService {
@@ -23,8 +24,16 @@ export class UserService {
     private readonly orderRepository: Repository<Order>,
     @InjectQueue('upload') private readonly uploadQueue: Queue,
     @InjectQueue('mail') private readonly mailQueue: Queue,
+    private readonly redisConfig: RedisConfigService,
   ) {
-    this.queueEvents = new QueueEvents('upload');
+    this.queueEvents = new QueueEvents('upload', {
+      connection: {
+        host: this.redisConfig.host,
+        port: this.redisConfig.port,
+        username: this.redisConfig.user,
+        password: this.redisConfig.password,
+      },
+    });
   }
 
   async findById(id: number): Promise<User> {

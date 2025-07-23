@@ -1,11 +1,14 @@
 services:
-  # app:
-  #   restart: unless-stopped
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - '${PORT}:${PORT}'
+  app:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '${PORT}:${PORT}'
+    depends_on:
+      - db
+      - redis
 
   db:
     image: postgres:alpine
@@ -16,7 +19,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - '${DB_PORT}:5432'
+      - '5434:5432'
 
   redis:
     image: redis:alpine
